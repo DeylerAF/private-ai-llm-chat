@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
 
+import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
+
 const mode = (process.env.BUILD_MODE as "export" | "standalone") ?? "export";
 console.log("[Next] build mode", mode);
 
@@ -21,10 +23,6 @@ const cspHeader = `
     frame-ancestors 'none';
     upgrade-insecure-requests;
 `;
-
-const isProd = process.env.NODE_ENV === "production";
-
-const internalHost = process.env.TAURI_DEV_HOST || "localhost";
 
 const nextConfig: NextConfig = {
   webpack(config, { isServer }) {
