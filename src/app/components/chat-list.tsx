@@ -60,7 +60,7 @@ export function ChatItem(props: {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           title={`${props.title}\n${Locale.ChatItem.ChatItemCount(
-            props.count,
+            props.count
           )}`}
         >
           {props.narrow ? (
@@ -104,15 +104,12 @@ export function ChatItem(props: {
 }
 
 export function ChatList(props: { narrow?: boolean }) {
-  const [sessions, selectedIndex, selectSession, moveSession] = useChatStore(
-    (state) => [
-      state.sessions,
-      state.currentSessionIndex,
-      state.selectSession,
-      state.moveSession,
-    ],
-  );
-  const chatStore = useChatStore();
+  const sessions = useChatStore((state) => state.sessions);
+  const selectedIndex = useChatStore((state) => state.currentSessionIndex);
+  const selectSession = useChatStore((state) => state.selectSession);
+  const moveSession = useChatStore((state) => state.moveSession);
+  const deleteSession = useChatStore((state) => state.deleteSession);
+
   const navigate = useNavigate();
   const isMobileScreen = useMobileScreen();
 
@@ -159,7 +156,7 @@ export function ChatList(props: { narrow?: boolean }) {
                     (!props.narrow && !isMobileScreen) ||
                     (await showConfirm(Locale.Home.DeleteChat))
                   ) {
-                    chatStore.deleteSession(i);
+                    deleteSession(i);
                   }
                 }}
                 narrow={props.narrow}
